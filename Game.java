@@ -49,15 +49,16 @@ public class Game
         supermercado = new Room("en el supermercado");
 
         // initialise room exits
-        plantaDos.setExits(restaurante,escaleras,recreativos,cine,supermercado);
-        restaurante.setExits(null,null,plantaDos,null,null);
-        cine.setExits(null, plantaDos,null,null,null);
-        recreativos.setExits(plantaDos,null,null,null,null);
-        escaleras.setExits(null,plantaUno,null,plantaDos,null);
-        plantaUno.setExits(tiendaRopa,salida,zapateria,escaleras,null);
-        tiendaRopa.setExits(null,null,plantaUno,null,null);
-        zapateria.setExits(plantaUno,null,null,null,null);
-        salida.setExits(null,null,null,plantaUno,null);
+        plantaDos.setExits(restaurante,escaleras,recreativos,cine,supermercado,null);
+        restaurante.setExits(null,null,plantaDos,null,null,null);
+        cine.setExits(null, plantaDos,null,null,null,null);
+        recreativos.setExits(plantaDos,null,null,null,null,null);
+        escaleras.setExits(null,plantaUno,null,plantaDos,null,null);
+        plantaUno.setExits(tiendaRopa,salida,zapateria,escaleras,null,null);
+        tiendaRopa.setExits(null,null,plantaUno,null,null,null);
+        zapateria.setExits(plantaUno,null,null,null,null,null);
+        salida.setExits(null,null,null,plantaUno,null,null);
+        supermercado.setExits(null,null,null,null,null,plantaDos);
 
         currentRoom = plantaDos;  // start game outside
     }
@@ -164,10 +165,13 @@ public class Game
         if(direction.equals("west")) {
             nextRoom = currentRoom.getExit("south");
         } 
-           if(direction.equals("southEast")) {
+        if(direction.equals("southEast")) {
             nextRoom = currentRoom.getExit("southEast");
         } 
-        
+        if(direction.equals("northEast")) {
+            nextRoom = currentRoom.getExit("northEast");
+        } 
+
         if (nextRoom == null) {
             System.out.println("There is no door!");
         }
@@ -199,11 +203,11 @@ public class Game
         System.out.print("Exits: ");
         System.out.print(getExitString());
     }
-    
+
     public String getExitString()
     {
         String Exits = "";
-        
+
         if(currentRoom.getExit("north") != null) {
             Exits += "north ";
         }
@@ -217,10 +221,13 @@ public class Game
             Exits += "west ";
         }
         if(currentRoom.getExit("southEast") != null) {
-           Exits += "southEast ";
+            Exits += "southEast ";
+        }
+        if(currentRoom.getExit("northEast") != null) {
+            Exits += "northEast ";
         }
         Exits += "\n";
-        
+
         return Exits;
     }
 }
