@@ -34,7 +34,7 @@ public class Game
      */
     private void createRooms()
     {
-        Room plantaDos,restaurante,cine,recreativos,escaleras,plantaUno,tiendaRopa,zapateria,salida;
+        Room plantaDos,restaurante,cine,recreativos,escaleras,plantaUno,tiendaRopa,zapateria,salida,supermercado;
 
         // create the rooms
         plantaDos = new Room("en la planta 2");
@@ -46,17 +46,18 @@ public class Game
         tiendaRopa = new Room("en una tienda de ropa");
         zapateria = new Room("en la zapateria");
         salida = new Room("en la salida principal");
+        supermercado = new Room("en el supermercado");
 
         // initialise room exits
-        plantaDos.setExits(restaurante,escaleras,recreativos,cine);
-        restaurante.setExits(null,null,plantaDos,null);
-        cine.setExits(null, plantaDos,null,null);
-        recreativos.setExits(plantaDos,null,null,null);
-        escaleras.setExits(null,plantaUno,null,plantaDos);
-        plantaUno.setExits(tiendaRopa,salida,zapateria,escaleras);
-        tiendaRopa.setExits(null,null,plantaUno,null);
-        zapateria.setExits(plantaUno,null,null,null);
-        salida.setExits(null,null,null,plantaUno);
+        plantaDos.setExits(restaurante,escaleras,recreativos,cine,supermercado);
+        restaurante.setExits(null,null,plantaDos,null,null);
+        cine.setExits(null, plantaDos,null,null,null);
+        recreativos.setExits(plantaDos,null,null,null,null);
+        escaleras.setExits(null,plantaUno,null,plantaDos,null);
+        plantaUno.setExits(tiendaRopa,salida,zapateria,escaleras,null);
+        tiendaRopa.setExits(null,null,plantaUno,null,null);
+        zapateria.setExits(plantaUno,null,null,null,null);
+        salida.setExits(null,null,null,plantaUno,null);
 
         currentRoom = plantaDos;  // start game outside
     }
@@ -164,6 +165,9 @@ public class Game
         if(direction.equals("west")) {
             nextRoom = currentRoom.westExit;
         }
+        if(direction.equals("southEast")) {
+            nextRoom = currentRoom.southEastExit;
+        }
 
         if (nextRoom == null) {
             System.out.println("There is no door!");
@@ -206,6 +210,9 @@ public class Game
         }
         if(currentRoom.westExit != null) {
             System.out.print("west ");
+        }
+         if(currentRoom.southEastExit != null) {
+            System.out.print("southEast ");
         }
         System.out.println();
     }
