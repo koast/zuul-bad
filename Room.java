@@ -83,7 +83,7 @@ public class Room
     {
         String exits = "";
         Set<String> directions = exit.keySet();
-        exits += "Tu estas  " + getDescription() +"\n";
+        exits += "Estas  " + getDescription() +"\n";
         exits += "Tus salidas son: \n";
         for(String addDirections: directions)
         {
