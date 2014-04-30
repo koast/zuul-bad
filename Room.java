@@ -1,3 +1,5 @@
+import java.util.HashMap;
+
 /**
  * Class Room - a room in an adventure game.
  *
@@ -15,12 +17,7 @@
 public class Room 
 {
     private String description;
-    private Room northExit;
-    private Room southExit;
-    private Room eastExit;
-    private Room westExit;
-    private Room southEastExit;
-    private Room northEastExit;
+    private HashMap<String,Room> exit;
 
     /**
      * Create a room described "description". Initially, it has
@@ -31,6 +28,8 @@ public class Room
     public Room(String description) 
     {
         this.description = description;
+        exit = new HashMap<>();
+   
     }
 
     /**
@@ -44,17 +43,17 @@ public class Room
     public void setExits(Room north, Room east, Room south, Room west,Room southEast, Room northEast) 
     {
         if(north != null)
-            northExit = north;
+            exit.put("north",north);
         if(east != null)
-            eastExit = east;
+            exit.put("east",east);
         if(south != null)
-            southExit = south;
+            exit.put("south",south);
         if(west != null)
-            westExit = west;
+            exit.put("west",west);
         if(southEast != null)
-            southEastExit = southEast;
-            if(northEast != null)
-            northEastExit = northEast;
+            exit.put("southEast",southEast);
+        if(northEast != null)
+            exit.put("southEast",southEast);
     }
 
     /**
@@ -66,33 +65,8 @@ public class Room
     }
 
     public Room getExit(String direction)
-    {
-        Room exit = null;
-        if (direction.equals("north"))  
-        {
-            exit = northExit;
-        }
-        if (direction.equals("south"))  
-        {
-            exit = southExit;
-        }
-        if (direction.equals("west"))  
-        {
-            exit = westExit;
-        }
-        if (direction.equals("east"))  
-        {
-            exit = eastExit;
-        }
-        if (direction.equals("southEast"))  
-        {
-            exit = southEastExit;
-        }
-         if (direction.equals("northEast"))  
-        {
-            exit = northEastExit;
-        }
-        return exit;
+    { 
+        return exit.get(direction);
     }
 
 }
