@@ -72,4 +72,25 @@ public class Room
         exits += "\n";
         return exits;
     }
+
+    /**
+     * Return a long description of this room, of the form:
+     *     You are in the 'name of room'
+     *     Exits: north west southwest
+     * @return A description of the room, including exits.
+     */
+    public String getLongDescription()
+    {
+        String exits = "";
+        Set<String> directions = exit.keySet();
+        exits += "Tu estas  " + getDescription() +"\n";
+        exits += "Tus salidas son: \n";
+        for(String addDirections: directions)
+        {
+            exits += addDirections + " ";
+        }
+        exits += "\n";
+        
+        return exits;
+    }
 }
