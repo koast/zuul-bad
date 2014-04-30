@@ -166,7 +166,7 @@ public class Game
         System.out.println("en un enorme centro comercial.");
         System.out.println();
         System.out.println("Tus comandos son:");
-        parser.getCommandWords().showAll();
+        parser.showCommands();
     }
 
     /** 

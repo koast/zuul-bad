@@ -67,4 +67,12 @@ public class Parser
     {
         return commands;
     }
+    
+    public void showCommands()
+    {
+        for(int x = 0;x < commands.getCommands().length;x++)
+        {
+            System.out.println(commands.getCommands()[x]);
+        }
+    }
 }
