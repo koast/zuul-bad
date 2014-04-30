@@ -1,3 +1,5 @@
+import java.util.Set;
+
 /**
  *  This class is the main class of the "World of Zuul" application. 
  *  "World of Zuul" is a very simple, text based adventure game.  Users 
@@ -47,19 +49,45 @@ public class Game
         zapateria = new Room("en la zapateria");
         salida = new Room("en la salida principal");
         supermercado = new Room("en el supermercado");
-
-        // initialise room exits
-        plantaDos.setExits(restaurante,escaleras,recreativos,cine,supermercado,null);
-        restaurante.setExits(null,null,plantaDos,null,null,null);
-        cine.setExits(null, plantaDos,null,null,null,null);
-        recreativos.setExits(plantaDos,null,null,null,null,null);
-        escaleras.setExits(null,plantaUno,null,plantaDos,null,null);
-        plantaUno.setExits(tiendaRopa,salida,zapateria,escaleras,null,null);
-        tiendaRopa.setExits(null,null,plantaUno,null,null,null);
-        zapateria.setExits(plantaUno,null,null,null,null,null);
-        salida.setExits(null,null,null,plantaUno,null,null);
-        supermercado.setExits(null,null,null,null,null,plantaDos);
-
+        
+        //Pisos Planta Dos
+        plantaDos.exit("north",restaurante);
+        plantaDos.exit("south",cine);
+        plantaDos.exit("west",recreativos);
+        plantaDos.exit("northEast",supermercado);
+        plantaDos.exit("east",escaleras);
+        
+        //Salidas Cine
+        cine.exit("north",plantaDos);
+        
+        //Salidas recreativos
+        recreativos.exit("east",plantaDos);
+        
+        //Salidas supermercado
+        supermercado.exit("southWest",plantaDos);
+        
+        //Salidas restaurante 
+        restaurante.exit("south",plantaDos);
+        
+        //Salida escaleras
+        escaleras.exit("downStairs",plantaUno);
+        escaleras.exit("upStairs",plantaDos);
+        
+        //Salidas Piso 1
+        plantaUno.exit("north",tiendaRopa);
+        plantaUno.exit("south",zapateria);
+        plantaUno.exit("west",escaleras);
+        plantaUno.exit("east",salida);
+        
+        //Salidas tienda ropa
+        tiendaRopa.exit("south",plantaUno);
+        
+        //salida salida
+        salida.exit("west",plantaUno);
+        
+        //salida zapateria
+        zapateria.exit("north",plantaUno);
+        
         currentRoom = plantaDos;  // start game outside
     }
 
