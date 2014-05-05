@@ -1,5 +1,5 @@
 import java.util.Set;
-import java.util.ArrayList;
+import java.util.Stack;
 
 /**
  *  This class is the main class of the "World of Zuul" application. 
@@ -22,7 +22,7 @@ public class Game
 {
     private Parser parser;
     private Room currentRoom;
-    private ArrayList<Room> lastRoom;
+    private Stack<Room> lastRoom;
 
     /**
      * Create the game and initialise its internal map.
@@ -31,7 +31,7 @@ public class Game
     {
         createRooms();
         parser = new Parser();
-        lastRoom = new ArrayList<>();
+        lastRoom = new Stack<>();
     }
 
     /**
@@ -52,7 +52,7 @@ public class Game
         zapateria = new Room("en la zapateria");
         salida = new Room("en la salida principal");
         supermercado = new Room("en el supermercado");
-        
+
         //Pisos Planta Dos
         plantaDos.exit("north",restaurante);
         plantaDos.exit("south",cine);
@@ -60,47 +60,47 @@ public class Game
         plantaDos.exit("northEast",supermercado);
         plantaDos.exit("east",escaleras);
         plantaDos.addItem(" una papelera",5);
-        
+
         //Salidas Cine
         cine.exit("north",plantaDos);
         cine.addItem(" una bolsa de palomitas",0.5);
-        
+
         //Salidas recreativos
         recreativos.exit("east",plantaDos);
         recreativos.addItem(" una moneda",0.05);
-        
+
         //Salidas supermercado
         supermercado.exit("southWest",plantaDos);
         supermercado.addItem(" un carro de la compra",20);
-        
+
         //Salidas restaurante 
         restaurante.exit("south",plantaDos);
         restaurante.addItem(" un plato lleno de comida",1);
-        
+
         //Salida escaleras
         escaleras.exit("downStairs",plantaUno);
         escaleras.exit("upStairs",plantaDos);
         escaleras.addItem(" una cartera",1);
-        
+
         //Salidas Piso 1
         plantaUno.exit("north",tiendaRopa);
         plantaUno.exit("south",zapateria);
         plantaUno.exit("west",escaleras);
         plantaUno.exit("east",salida);
         plantaUno.addItem(" una planta",5);
-        
+
         //Salidas tienda ropa
         tiendaRopa.exit("south",plantaUno);
         tiendaRopa.addItem(" una camiseta azul", 0.2);
-        
+
         //salida salida
         salida.exit("west",plantaUno);
         salida.addItem(" una puerta",5);
-        
+
         //salida zapateria
         zapateria.exit("north",plantaUno);
         zapateria.addItem(" un par de deportivas",0.25);
-        
+
         currentRoom = plantaDos;  // start game outside
     }
 
@@ -203,14 +203,14 @@ public class Game
         String direction = command.getSecondWord();
 
         // Try to leave current room.
-  
-         Room nextRoom = currentRoom.getExit(direction);
-     
+
+        Room nextRoom = currentRoom.getExit(direction);
+
         if (nextRoom == null) {
             System.out.println("!No hay puerta!");
         }
         else {
-            lastRoom.add(currentRoom);
+            lastRoom.push(currentRoom);
             currentRoom = nextRoom;
             printLocationInfo();
         }
@@ -234,20 +234,22 @@ public class Game
 
     private void printLocationInfo()
     {
-       System.out.println(currentRoom.getLongDescription());
+        System.out.println(currentRoom.getLongDescription());
     }
-    
+
     private void goLastRoom()
     {
-        currentRoom = lastRoom.get(lastRoom.size() - 1);
-        printLocationInfo();
+        if (!lastRoom.empty())
+        {
+            currentRoom = lastRoom.pop();
+            printLocationInfo();
+        }
+        else
+        {
+            System.out.println("NO PUEDES IR MAS ATRAS");
+        }
     }
 }
-
-
-
-
-
 
 
 
