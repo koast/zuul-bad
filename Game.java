@@ -1,4 +1,5 @@
 import java.util.Set;
+import java.util.ArrayList;
 
 /**
  *  This class is the main class of the "World of Zuul" application. 
@@ -21,6 +22,7 @@ public class Game
 {
     private Parser parser;
     private Room currentRoom;
+    private ArrayList<Room> lastRoom;
 
     /**
      * Create the game and initialise its internal map.
@@ -29,6 +31,7 @@ public class Game
     {
         createRooms();
         parser = new Parser();
+        lastRoom = new ArrayList<>();
     }
 
     /**
@@ -163,6 +166,9 @@ public class Game
         else if (commandWord.equals("eat")) {
             System.out.println("You have eaten now and you are not hungry any more");
         }
+        else if (commandWord.equals("back")) {
+            goLastRoom();
+        }
 
         return wantToQuit;
     }
@@ -204,6 +210,7 @@ public class Game
             System.out.println("!No hay puerta!");
         }
         else {
+            lastRoom.add(currentRoom);
             currentRoom = nextRoom;
             printLocationInfo();
         }
@@ -228,6 +235,12 @@ public class Game
     private void printLocationInfo()
     {
        System.out.println(currentRoom.getLongDescription());
+    }
+    
+    private void goLastRoom()
+    {
+        currentRoom = lastRoom.get(lastRoom.size() - 1);
+        printLocationInfo();
     }
 }
 
