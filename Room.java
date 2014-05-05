@@ -1,5 +1,6 @@
 import java.util.HashMap;
 import java.util.Set;
+import java.util.Random;
 
 /**
  * Class Room - a room in an adventure game.
@@ -19,6 +20,8 @@ public class Room
 {
     private String description;
     private HashMap<String,Room> exit;
+    private String[] itemDescription;
+    private float itemSize;
 
     /**
      * Create a room described "description". Initially, it has
@@ -30,6 +33,13 @@ public class Room
     {
         this.description = description;
         exit = new HashMap<>();
+        itemDescription = new String[6];
+        itemDescription[0] = " una Llave";
+        itemDescription[1] = " un Cafe";
+        itemDescription[2] = " un Botiquin";
+        itemDescription[3] = " una Cartera";
+        itemDescription[4] = " un movil";
+        itemDescription[5] = " una flauta";
 
     }
 
@@ -92,5 +102,15 @@ public class Room
         exits += "\n";
         
         return exits;
+    }
+    
+    public String getItem()
+    {
+        Random aleatorio = new Random();
+        itemSize = aleatorio.nextFloat() * 20;
+        String values = "En esta sala ahi";
+        values += itemDescription[aleatorio.nextInt(itemDescription.length)] + "\n";
+        values+= "Pesa: " + itemSize + " KG\n";
+        return values;
     }
 }

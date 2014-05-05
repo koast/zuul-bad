@@ -148,6 +148,7 @@ public class Game
         }
         else if (commandWord.equals("look")) {
             printLocationInfo();
+            System.out.println(currentRoom.getItem());
         }
         else if (commandWord.equals("eat")) {
             System.out.println("You have eaten now and you are not hungry any more");
