@@ -56,37 +56,47 @@ public class Game
         plantaDos.exit("west",recreativos);
         plantaDos.exit("northEast",supermercado);
         plantaDos.exit("east",escaleras);
+        plantaDos.addItem(" una papelera",5);
         
         //Salidas Cine
         cine.exit("north",plantaDos);
+        cine.addItem(" una bolsa de palomitas",0.5);
         
         //Salidas recreativos
         recreativos.exit("east",plantaDos);
+        recreativos.addItem(" una moneda",0.05);
         
         //Salidas supermercado
         supermercado.exit("southWest",plantaDos);
+        supermercado.addItem(" un carro de la compra",20);
         
         //Salidas restaurante 
         restaurante.exit("south",plantaDos);
+        restaurante.addItem(" un plato lleno de comida",1);
         
         //Salida escaleras
         escaleras.exit("downStairs",plantaUno);
         escaleras.exit("upStairs",plantaDos);
+        escaleras.addItem(" una cartera",1);
         
         //Salidas Piso 1
         plantaUno.exit("north",tiendaRopa);
         plantaUno.exit("south",zapateria);
         plantaUno.exit("west",escaleras);
         plantaUno.exit("east",salida);
+        plantaUno.addItem(" una planta",5);
         
         //Salidas tienda ropa
         tiendaRopa.exit("south",plantaUno);
+        tiendaRopa.addItem(" una camiseta azul", 0.2);
         
         //salida salida
         salida.exit("west",plantaUno);
+        salida.addItem(" una puerta",5);
         
         //salida zapateria
         zapateria.exit("north",plantaUno);
+        zapateria.addItem(" un par de deportivas",0.25);
         
         currentRoom = plantaDos;  // start game outside
     }
@@ -148,7 +158,7 @@ public class Game
         }
         else if (commandWord.equals("look")) {
             printLocationInfo();
-            System.out.println(currentRoom.getItem());
+            currentRoom.getItems();
         }
         else if (commandWord.equals("eat")) {
             System.out.println("You have eaten now and you are not hungry any more");
