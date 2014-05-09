@@ -12,7 +12,7 @@ public class Item
     private String itemDescription;
     private double itemSize;
     private boolean canTakeIt;
-    
+
     /**
      * Constructor for objects of class Item
      */
@@ -22,17 +22,17 @@ public class Item
         this.itemSize = itemSize;
         this.canTakeIt = canTakeIt;
     }
-    
+
     public double getSize()
     {
-         return itemSize;
+        return itemSize;
     }
 
     public String getDescription()
     {       
         return itemDescription;
     }
-    
+
     public boolean getCanTakeIt()
     {
         return canTakeIt;

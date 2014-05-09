@@ -5,7 +5,7 @@ public class Player
 {
 
     private ArrayList<Item> itemList;
-    private final static double MAX_SIZE = 5;
+    private final static double MAX_SIZE = 2;
     private double currentSize;
     private Room currentRoom;
     private Stack<Room> lastRoom;
@@ -14,7 +14,7 @@ public class Player
     {
         itemList = new ArrayList<>();
         lastRoom = new Stack<>();
-        
+
     }
 
     public void addItem(Item item)
@@ -73,6 +73,7 @@ public class Player
                 }
             }
             currentSize +=itemRemove.getSize();
+            currentRoom.addItem(itemRemove);
             itemList.remove(itemRemove);
 
             if (itemTaked == null)
@@ -83,6 +84,7 @@ public class Player
             {
                 System.out.println("Has tirado: " + itemTaked);
                 getSizeInfo();
+                
             }
         }
         else

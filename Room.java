@@ -80,7 +80,8 @@ public class Room
      * Return a long description of this room, of the form:
      *     You are in the 'name of room'
      *     Exits: north west southwest
-     * @return A description of the room, including exits.
+     * @return A description 
+     * of the room, including exits.
      */
     public String getLongDescription()
     {
@@ -100,6 +101,11 @@ public class Room
     public void addItem(String description, double size,boolean canTakeIt)
     {
         itemList.add(new Item(description,size,canTakeIt)); 
+    }
+    
+    public void addItem(Item item)
+    {
+        itemList.add(item);
     }
 
     public void getItems()
@@ -124,7 +130,7 @@ public class Room
         currentItem = getItem;
         return getItem;
     }
-    
+
     public void deleteCurrentItem()
     {
         itemList.remove(currentItem);

@@ -49,7 +49,7 @@ public class CommandWords
             System.out.println(validCommands[x]);
         }
     }
-    
+
     public String[] getCommands()
     {
         return validCommands;

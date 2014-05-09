@@ -60,7 +60,7 @@ public class Game
         plantaDos.exit("west",recreativos);
         plantaDos.exit("northEast",supermercado);
         plantaDos.exit("east",escaleras);
-        plantaDos.addItem("papelera",5,false);
+        plantaDos.addItem("papelera",3,true);
 
         //Salidas Cine
         cine.exit("north",plantaDos);
@@ -101,7 +101,7 @@ public class Game
         //salida zapateria
         zapateria.exit("north",plantaUno);
         zapateria.addItem("deportivas",0.25,true); 
-        
+
         startRoom = plantaDos;
 
     }
@@ -217,7 +217,5 @@ public class Game
     {
         System.out.println(currentPlayer.getCurrentRoom().getLongDescription());
     }
-    
-    
-}
 
+}
