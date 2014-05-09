@@ -21,6 +21,7 @@ public class Room
     private String description;
     private HashMap<String,Room> exit;
     private ArrayList<Item> itemList;
+    private Item currentItem;
 
     /**
      * Create a room described "description". Initially, it has
@@ -92,21 +93,40 @@ public class Room
             exits += addDirections + " ";
         }
         exits += "\n";
-        
+
         return exits;
     }
-    
-    public void addItem(String description, double size)
+
+    public void addItem(String description, double size,boolean canTakeIt)
     {
-        itemList.add(new Item(description,size)); 
+        itemList.add(new Item(description,size,canTakeIt)); 
     }
-    
+
     public void getItems()
     {
         for(Item getItem: itemList)
         {
-            System.out.println("Hay" + getItem.getDescription());
+            System.out.println("Hay un/una " + getItem.getDescription());
             System.out.println("Pesa " + getItem.getSize() + " KG\n");
         }
+    }
+
+    public Item takeItem(String itemDescription)
+    {
+        Item getItem = null;
+        for(Item searchItem: itemList)
+        {
+            if (itemDescription.equals(searchItem.getDescription()))
+            {
+                getItem = searchItem;
+            }
+        }
+        currentItem = getItem;
+        return getItem;
+    }
+    
+    public void deleteCurrentItem()
+    {
+        itemList.remove(currentItem);
     }
 }

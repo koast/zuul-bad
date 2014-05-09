@@ -21,8 +21,8 @@ import java.util.Stack;
 public class Game 
 {
     private Parser parser;
-    private Room currentRoom;
-    private Stack<Room> lastRoom;
+    private Player currentPlayer;
+    private Room startRoom;
 
     /**
      * Create the game and initialise its internal map.
@@ -31,7 +31,8 @@ public class Game
     {
         createRooms();
         parser = new Parser();
-        lastRoom = new Stack<>();
+        currentPlayer = new Player();
+        currentPlayer.setRoom(startRoom);
     }
 
     /**
@@ -59,49 +60,50 @@ public class Game
         plantaDos.exit("west",recreativos);
         plantaDos.exit("northEast",supermercado);
         plantaDos.exit("east",escaleras);
-        plantaDos.addItem(" una papelera",5);
+        plantaDos.addItem("papelera",5,false);
 
         //Salidas Cine
         cine.exit("north",plantaDos);
-        cine.addItem(" una bolsa de palomitas",0.5);
+        cine.addItem("palomitas",0.5,true);
 
         //Salidas recreativos
         recreativos.exit("east",plantaDos);
-        recreativos.addItem(" una moneda",0.05);
+        recreativos.addItem("moneda",0.05,true);
 
         //Salidas supermercado
         supermercado.exit("southWest",plantaDos);
-        supermercado.addItem(" un carro de la compra",20);
+        supermercado.addItem("carro",20,false);
 
         //Salidas restaurante 
         restaurante.exit("south",plantaDos);
-        restaurante.addItem(" un plato lleno de comida",1);
+        restaurante.addItem("comida",1,true);
 
         //Salida escaleras
         escaleras.exit("downStairs",plantaUno);
         escaleras.exit("upStairs",plantaDos);
-        escaleras.addItem(" una cartera",1);
+        escaleras.addItem("cartera",1,true);
 
         //Salidas Piso 1
         plantaUno.exit("north",tiendaRopa);
         plantaUno.exit("south",zapateria);
         plantaUno.exit("west",escaleras);
         plantaUno.exit("east",salida);
-        plantaUno.addItem(" una planta",5);
+        plantaUno.addItem("planta",5,false);
 
         //Salidas tienda ropa
         tiendaRopa.exit("south",plantaUno);
-        tiendaRopa.addItem(" una camiseta azul", 0.2);
+        tiendaRopa.addItem("camiseta", 0.2,true);
 
         //salida salida
         salida.exit("west",plantaUno);
-        salida.addItem(" una puerta",5);
+        salida.addItem("puerta",5,false);
 
         //salida zapateria
         zapateria.exit("north",plantaUno);
-        zapateria.addItem(" un par de deportivas",0.25);
+        zapateria.addItem("deportivas",0.25,true); 
+        
+        startRoom = plantaDos;
 
-        currentRoom = plantaDos;  // start game outside
     }
 
     /**
@@ -110,9 +112,6 @@ public class Game
     public void play() 
     {            
         printWelcome();
-
-        // Enter the main command loop.  Here we repeatedly read commands and
-        // execute them until the game is over.
 
         boolean finished = false;
         while (! finished) {
@@ -154,20 +153,29 @@ public class Game
             printHelp();
         }
         else if (commandWord.equals("go")) {
-            goRoom(command);
+            currentPlayer.goRoom(command);
         }
         else if (commandWord.equals("quit")) {
             wantToQuit = quit(command);
         }
         else if (commandWord.equals("look")) {
             printLocationInfo();
-            currentRoom.getItems();
+            currentPlayer.getCurrentRoom().getItems();
         }
         else if (commandWord.equals("eat")) {
-            System.out.println("You have eaten now and you are not hungry any more");
+            currentPlayer.eat();
         }
         else if (commandWord.equals("back")) {
-            goLastRoom();
+            currentPlayer.goLastRoom();
+        }
+        else if (commandWord.equals("items")) {
+            currentPlayer.showItemInfo();
+        }
+        else if (commandWord.equals("take")) {
+            currentPlayer.takeItem(command);
+        }
+        else if (commandWord.equals("drop")) {
+            currentPlayer.dropItem(command);
         }
 
         return wantToQuit;
@@ -190,33 +198,6 @@ public class Game
     }
 
     /** 
-     * Try to go in one direction. If there is an exit, enter
-     * the new room, otherwise print an error message.
-     */
-    private void goRoom(Command command) 
-    {
-        if(!command.hasSecondWord()) {
-            // if there is no second word, we don't know where to go...
-            System.out.println("¿Ir donde?");
-            return;
-        }
-        String direction = command.getSecondWord();
-
-        // Try to leave current room.
-
-        Room nextRoom = currentRoom.getExit(direction);
-
-        if (nextRoom == null) {
-            System.out.println("!No hay puerta!");
-        }
-        else {
-            lastRoom.push(currentRoom);
-            currentRoom = nextRoom;
-            printLocationInfo();
-        }
-    }
-
-    /** 
      * "Quit" was entered. Check the rest of the command to see
      * whether we really quit the game.
      * @return true, if this command quits the game, false otherwise.
@@ -234,25 +215,9 @@ public class Game
 
     private void printLocationInfo()
     {
-        System.out.println(currentRoom.getLongDescription());
+        System.out.println(currentPlayer.getCurrentRoom().getLongDescription());
     }
-
-    private void goLastRoom()
-    {
-        if (!lastRoom.empty())
-        {
-            currentRoom = lastRoom.pop();
-            printLocationInfo();
-        }
-        else
-        {
-            System.out.println("NO PUEDES IR MAS ATRAS");
-        }
-    }
+    
+    
 }
-
-
-
-
-
 
