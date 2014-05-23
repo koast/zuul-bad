@@ -5,6 +5,7 @@ public class Item
     private String id;
     private static int idSiguiente = 1; 
     private boolean canBeTaken;
+    private boolean canBeUse;
     
     /**
      * Constructor for objects of class Item
@@ -12,7 +13,7 @@ public class Item
      * @param description The item's description
      * @param weight The item's weight
      */
-    public Item(String description, double weight, boolean canBeTaken)
+    public Item(String description, double weight, boolean canBeTaken, boolean canBeUse)
     {
         this.id = "" + idSiguiente;
         this.idSiguiente++;
@@ -20,6 +21,7 @@ public class Item
         this.description = description;
         this.weight = weight;
         this.canBeTaken = canBeTaken;
+        this.canBeUse = canBeUse;
     }
     
     /**
@@ -58,8 +60,14 @@ public class Item
      * 
      * @return true if the item can be taken, false otherwise
      */
-    public boolean canBeTaken() {
+    public boolean canBeTaken() 
+    {
      	return canBeTaken;
+    }  
+    
+    public boolean canBeUse() 
+    {
+     	return canBeUse;
     }  
 }
 

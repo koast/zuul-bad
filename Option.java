@@ -2,7 +2,7 @@ public enum Option
 {
 	GO("ir"), HELP("ayuda"), QUIT("salir"), TAKE("coger"), 
 	DROP("dejar"), BACK("volver"), EAT("comer"), LOOK("mirar"), 
-	ITEMS("objetos"), UNKNOWN("");
+	ITEMS("objetos"), USE("usar"), UNKNOWN("");
 	
 	private String optionString;
 

@@ -180,6 +180,9 @@ public class Game
         case DROP:
              player.drop(command);
              break;
+        case USE:
+             player.use(command);
+             break;
         }
         return wantToQuit;
     }
