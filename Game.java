@@ -43,16 +43,16 @@ public class Game
         Room plantaDos,restaurante,cine,recreativos,ascensor,plantaUno,tiendaRopa,zapateria,salida,supermercado;
 
         // create the rooms
-        plantaDos = new Room("en la planta 2",false);
-        restaurante = new Room("en una zona con restaurantes",false);
-        cine = new Room("en la puerta del cine",false);
-        recreativos = new Room("en la zona recreativos",false);
-        ascensor = new Room("en el ascensor",true);
-        plantaUno = new Room("en el primer piso (Planta 1)",false);
-        tiendaRopa = new Room("en una tienda de ropa",false);
-        zapateria = new Room("en la zapateria",false);
+        plantaDos = new Room("en la planta 2",true);
+        restaurante = new Room("en una zona con restaurantes",true);
+        cine = new Room("en la puerta del cine",true);
+        recreativos = new Room("en la zona recreativos",true);
+        ascensor = new Room("en el ascensor",false);
+        plantaUno = new Room("en el primer piso (Planta 1)",true);
+        tiendaRopa = new Room("en una tienda de ropa",true);
+        zapateria = new Room("en la zapateria",true);
         salida = new Room("en la salida principal",false);
-        supermercado = new Room("en el supermercado",false);
+        supermercado = new Room("en el supermercado",true);
 
         //Pisos Planta Dos
         plantaDos.setExit("north",restaurante);
@@ -80,7 +80,7 @@ public class Game
         restaurante.addItem(new Item("comida",1,true,false));
 
         //Salida ascensor
-        ascensor.setExit("downStairs",plantaUno);
+        ascensor.setExit("stayHere",plantaUno);
         ascensor.setExit("upStairs",plantaDos);
         ascensor.addItem(new Item("cartera",1,true,false));
 
@@ -102,7 +102,7 @@ public class Game
         //salida zapateria
         zapateria.setExit("north",plantaUno);
         zapateria.addItem(new Item("deportivas",0.25,true,false)); 
-        cine.addItem(new Item("llavePuerta",0.5,true,true));
+        zapateria.addItem(new Item("llavePuerta",0.5,true,true));
 
         player.setCurrentRoom(plantaDos);
 

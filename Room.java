@@ -111,14 +111,14 @@ public class Room
 		Item item = null;
         while((item == null) && (index < items.size())) { 
         	Item currentItem = items.get(index);
-        	if (currentItem.getId().equals(id)) {
+        	if (currentItem.getDescription().equals(id)) {
 				item = currentItem;
         	}
         	index++;
         }
         return item;
     }
-    
+
     
     /**
      * Remove the given item
@@ -130,7 +130,7 @@ public class Room
  		int index = 0;
  	  	boolean found = false;
   		while(index < items.size() && !found){
-    		if(items.get(index).getId().equals(id)){
+    		if(items.get(index).getDescription().equals(id)){
 			items.remove(index);
 			found = true;
     		}
@@ -141,5 +141,10 @@ public class Room
     public void open()
     {
         open = true;
+    }
+    
+    public boolean getOpen()
+    {
+        return open;
     }
 }

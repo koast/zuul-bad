@@ -69,6 +69,11 @@ public class Item
     {
      	return canBeUse;
     }  
+    
+    public String getDescription()
+    {
+        return description;
+    }
 }
 
 
