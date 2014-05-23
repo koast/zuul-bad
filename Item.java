@@ -1,40 +1,72 @@
-import java.util.Random;
-
-/**
- * Write a description of class Item here.
- * 
- * @author Alejandro Aller Diez
- * @version (a version number or a date)
- */
 public class Item
 {
-
-    private String itemDescription;
-    private double itemSize;
-    private boolean canTakeIt;
-
+    private String description;
+    private double weight;
+    private String id;
+    private static int idSiguiente = 1; 
+    private boolean canBeTaken;
+    
     /**
      * Constructor for objects of class Item
+     * 
+     * @param description The item's description
+     * @param weight The item's weight
      */
-    public Item(String itemDescription,double itemSize,boolean canTakeIt)
+    public Item(String description, double weight, boolean canBeTaken)
     {
-        this.itemDescription = itemDescription;
-        this.itemSize = itemSize;
-        this.canTakeIt = canTakeIt;
+        this.id = "" + idSiguiente;
+        this.idSiguiente++;
+        
+        this.description = description;
+        this.weight = weight;
+        this.canBeTaken = canBeTaken;
     }
-
-    public double getSize()
+    
+    /**
+     * Get the long description of item
+     * 
+     * @return     The long description of item
+     */
+    public String getLongDescription()
     {
-        return itemSize;
+        return "ID " + id + ": " + description + " (" + weight + " kg.)";
     }
-
-    public String getDescription()
-    {       
-        return itemDescription;
-    }
-
-    public boolean getCanTakeIt()
+    
+    
+    /**
+     * Devuelve el id del objeto
+     * 
+     * @return el id del objeto
+     */
+    public String getId()
     {
-        return canTakeIt;
+        return id;
     }
+    
+    /**
+     * Get the item's weight
+     * 
+     * @return weight the item's weight in kg
+     */
+    public double getWeight()  
+    {
+    	return weight;
+    }  
+    
+    /**
+     * Return if the item can be taken
+     * 
+     * @return true if the item can be taken, false otherwise
+     */
+    public boolean canBeTaken() {
+     	return canBeTaken;
+    }  
 }
+
+
+
+ 
+
+
+
+

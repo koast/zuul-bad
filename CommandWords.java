@@ -1,3 +1,6 @@
+import java.util.HashMap;
+ 
+ 
 /**
  * This class is part of the "World of Zuul" application. 
  * "World of Zuul" is a very simple, text based adventure game.  
@@ -8,20 +11,16 @@
  * @author  Michael Kölling and David J. Barnes
  * @version 2011.07.31
  */
-
 public class CommandWords
-{
-    // a constant array that holds all valid command words
-    private static final String[] validCommands = {
-            "go", "quit", "help", "look", "eat", "back", "take", "drop", "items"
-        };
+{     
+	private Option[] commands;
 
     /**
      * Constructor - initialise the command words.
      */
     public CommandWords()
     {
-        // nothing to do at the moment...
+	commands = Option.values();	
     }
 
     /**
@@ -30,28 +29,66 @@ public class CommandWords
      * false if it isn't.
      */
     public boolean isCommand(String aString)
-    {
-        for(int i = 0; i < validCommands.length; i++) {
-            if(validCommands[i].equals(aString))
-                return true;
-        }
-        // if we get here, the string was not found in the commands
-        return false;
+    {	
+    	boolean command = false;
+		int index= 0; 
+		while (index<commands.length && !command){
+			Option key = commands[index];
+			if (key != Option.UNKNOWN){
+				if (key.getOptionString().equals(aString)){
+					command= true;
+				}
+				
+			}
+			index++;
+		}
+
+    	return command;
+
     }
 
     /**
      * Print all valid commands to System.out
-     */
+     */    
     public void showAll()
     {
-        for(int x = 0;x < validCommands.length;x++)
-        {
-            System.out.println(validCommands[x]);
-        }
+		for(Option option: commands){
+		if (option != Option.UNKNOWN){
+			System.out.print(option.getOptionString()+ " ");
+			}
+		}
     }
-
-    public String[] getCommands()
-    {
-        return validCommands;
-    }
+		
+	/**
+	 * Return the Option associated with a word.
+	 * @param commandWord The word to look up (as a string).
+	 * @return The Option correspondng to commandWord, or UNKNOWN
+	 *         if it is not a valid command word.
+	 */
+	public Option getCommandWord(String commandWord)
+	{
+	  	Option comando= Option.UNKNOWN;
+	  	boolean encontrado = false;
+	  	int index=0;
+                while(index<commands.length && !encontrado) {
+                	Option key = commands[index];
+					if (key != Option.UNKNOWN){
+						if (key.getOptionString().equals(commandWord)){
+							encontrado = true;
+							comando = key;
+						}
+					}
+				    index++;
+                }	  
+               	return comando;
+	}      
 }
+
+
+
+
+
+
+
+
+

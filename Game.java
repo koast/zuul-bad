@@ -21,18 +21,18 @@ import java.util.Stack;
 public class Game 
 {
     private Parser parser;
-    private Player currentPlayer;
-    private Room startRoom;
+    private Player player;
+    private int siguienteIDAAsignar;
+    
 
     /**
      * Create the game and initialise its internal map.
      */
     public Game() 
     {
+        player = new Player();
         createRooms();
         parser = new Parser();
-        currentPlayer = new Player();
-        currentPlayer.setRoom(startRoom);
     }
 
     /**
@@ -55,54 +55,54 @@ public class Game
         supermercado = new Room("en el supermercado");
 
         //Pisos Planta Dos
-        plantaDos.exit("north",restaurante);
-        plantaDos.exit("south",cine);
-        plantaDos.exit("west",recreativos);
-        plantaDos.exit("northEast",supermercado);
-        plantaDos.exit("east",escaleras);
-        plantaDos.addItem("papelera",3,true);
+        plantaDos.setExit("north",restaurante);
+        plantaDos.setExit("south",cine);
+        plantaDos.setExit("west",recreativos);
+        plantaDos.setExit("northEast",supermercado);
+        plantaDos.setExit("east",escaleras);
+        plantaDos.addItem(new Item("papelera",3,true));
 
         //Salidas Cine
-        cine.exit("north",plantaDos);
-        cine.addItem("palomitas",0.5,true);
+        cine.setExit("north",plantaDos);
+        cine.addItem(new Item("palomitas",0.5,true));
 
         //Salidas recreativos
-        recreativos.exit("east",plantaDos);
-        recreativos.addItem("moneda",0.05,true);
+        recreativos.setExit("east",plantaDos);
+        recreativos.addItem(new Item("moneda",0.05,true));
 
         //Salidas supermercado
-        supermercado.exit("southWest",plantaDos);
-        supermercado.addItem("carro",20,false);
+        supermercado.setExit("southWest",plantaDos);
+        supermercado.addItem(new Item("carro",20,false));
 
         //Salidas restaurante 
-        restaurante.exit("south",plantaDos);
-        restaurante.addItem("comida",1,true);
+        restaurante.setExit("south",plantaDos);
+        restaurante.addItem(new Item("comida",1,true));
 
         //Salida escaleras
-        escaleras.exit("downStairs",plantaUno);
-        escaleras.exit("upStairs",plantaDos);
-        escaleras.addItem("cartera",1,true);
+        escaleras.setExit("downStairs",plantaUno);
+        escaleras.setExit("upStairs",plantaDos);
+        escaleras.addItem(new Item("cartera",1,true));
 
         //Salidas Piso 1
-        plantaUno.exit("north",tiendaRopa);
-        plantaUno.exit("south",zapateria);
-        plantaUno.exit("west",escaleras);
-        plantaUno.exit("east",salida);
-        plantaUno.addItem("planta",5,false);
+        plantaUno.setExit("north",tiendaRopa);
+        plantaUno.setExit("south",zapateria);
+        plantaUno.setExit("west",escaleras);
+        plantaUno.setExit("east",salida);
+        plantaUno.addItem(new Item("planta",5,false));
 
         //Salidas tienda ropa
-        tiendaRopa.exit("south",plantaUno);
-        tiendaRopa.addItem("camiseta", 0.2,true);
+        tiendaRopa.setExit("south",plantaUno);
+        tiendaRopa.addItem(new Item("camiseta", 0.2,true));
 
         //salida salida
-        salida.exit("west",plantaUno);
-        salida.addItem("puerta",5,false);
+        salida.setExit("west",plantaUno);
+        salida.addItem(new Item("puerta",5,false));
 
         //salida zapateria
-        zapateria.exit("north",plantaUno);
-        zapateria.addItem("deportivas",0.25,true); 
+        zapateria.setExit("north",plantaUno);
+        zapateria.addItem(new Item("deportivas",0.25,true)); 
 
-        startRoom = plantaDos;
+        player.setCurrentRoom(plantaDos);
 
     }
 
@@ -113,12 +113,15 @@ public class Game
     {            
         printWelcome();
 
+        // Enter the main command loop.  Here we repeatedly read commands and
+        // execute them until the game is over.
+
         boolean finished = false;
         while (! finished) {
             Command command = parser.getCommand();
             finished = processCommand(command);
         }
-        System.out.println("Gracias por jugar. Adios");
+        System.out.println("Thank you for playing.  Good bye.");
     }
 
     /**
@@ -127,11 +130,11 @@ public class Game
     private void printWelcome()
     {
         System.out.println();
-        System.out.println("Bienvenido al mundo de Zuul!");
-        System.out.println("el mundo de Zuul, es un increible y aburrido juego de aventuras.");
-        System.out.println("Escribe 'help' si necesitas ayuda.");
+        System.out.println("Welcome to the World of Zuul!");
+        System.out.println("World of Zuul is a new, incredibly boring adventure game.");
+        System.out.println("Type 'help' if you need help.");
         System.out.println();
-        printLocationInfo();
+        player.printLocationInfo();
     }
 
     /**
@@ -144,40 +147,40 @@ public class Game
         boolean wantToQuit = false;
 
         if(command.isUnknown()) {
-            System.out.println("No entiendo lo que quieres decir...");
+            System.out.println("I don't know what you mean...");
             return false;
         }
 
-        String commandWord = command.getCommandWord();
-        if (commandWord.equals("help")) {
-            printHelp();
+        Option commandWord = command.getCommandWord();
+        switch (commandWord){
+        case HELP:
+             printHelp();
+             break;
+        case GO:
+             player.goRoom(command);
+             break;
+        case LOOK:
+             player.look();
+             break;
+        case EAT:
+             player.eat();
+             break;
+        case BACK:
+             player.back();
+             break;
+        case ITEMS:
+             player.items();
+             break;
+        case TAKE:
+             player.take(command);
+             break;
+        case QUIT:
+             wantToQuit = quit(command);
+             break;
+        case DROP:
+             player.drop(command);
+             break;
         }
-        else if (commandWord.equals("go")) {
-            currentPlayer.goRoom(command);
-        }
-        else if (commandWord.equals("quit")) {
-            wantToQuit = quit(command);
-        }
-        else if (commandWord.equals("look")) {
-            printLocationInfo();
-            currentPlayer.getCurrentRoom().getItems();
-        }
-        else if (commandWord.equals("eat")) {
-            currentPlayer.eat();
-        }
-        else if (commandWord.equals("back")) {
-            currentPlayer.goLastRoom();
-        }
-        else if (commandWord.equals("items")) {
-            currentPlayer.showItemInfo();
-        }
-        else if (commandWord.equals("take")) {
-            currentPlayer.takeItem(command);
-        }
-        else if (commandWord.equals("drop")) {
-            currentPlayer.dropItem(command);
-        }
-
         return wantToQuit;
     }
 
@@ -190,12 +193,14 @@ public class Game
      */
     private void printHelp() 
     {
-        System.out.println("Estas perdido y solo");
-        System.out.println("en un enorme centro comercial.");
+        System.out.println("You are lost. You are alone. You wander");
+        System.out.println("around at the comercial center.");
         System.out.println();
-        System.out.println("Tus comandos son:");
-        parser.showCommands();
+        System.out.println("Your command words are:");
+        parser.getCommands();
     }
+
+    
 
     /** 
      * "Quit" was entered. Check the rest of the command to see
@@ -205,17 +210,12 @@ public class Game
     private boolean quit(Command command) 
     {
         if(command.hasSecondWord()) {
-            System.out.println("¿Quitar que?");
+            System.out.println("Quit what?");
             return false;
         }
         else {
             return true;  // signal that we want to quit
         }
-    }
-
-    private void printLocationInfo()
-    {
-        System.out.println(currentPlayer.getCurrentRoom().getLongDescription());
     }
 
 }

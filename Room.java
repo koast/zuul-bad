@@ -18,10 +18,9 @@ import java.util.ArrayList;
  */
 public class Room 
 {
-    private String description;
-    private HashMap<String,Room> exit;
-    private ArrayList<Item> itemList;
-    private Item currentItem;
+    private String description;   
+    private HashMap<String, Room> exits;
+    private ArrayList<Item> items;
 
     /**
      * Create a room described "description". Initially, it has
@@ -32,22 +31,13 @@ public class Room
     public Room(String description) 
     {
         this.description = description;
-        exit = new HashMap<>();
-        itemList = new ArrayList<>();
+        exits = new HashMap<>();
+        items = new ArrayList<>();
     }
 
-    /**
-     * Define the exits of this room.  Every direction either leads
-     * to another room or is null (no exit there).
-     * @param north The north exit.
-     * @param east The east east.
-     * @param south The south exit.
-     * @param west The west exit.
-     */
-
-    public void exit(String description,Room room)
+    public void setExit(String direction, Room nextRoom)
     {
-        exit.put(description,room);
+        exits.put(direction, nextRoom);
     }
 
     /**
@@ -58,81 +48,91 @@ public class Room
         return description;
     }
 
-    public Room getExit(String direction)
-    { 
-        return exit.get(direction);
+    public Room getExit(String direction) 
+    {               
+        return exits.get(direction);
     }
 
-    public String getExitString()
+    /**
+     * Return a description of the room's exits.
+     * For example: "Exits: north east west"
+     *
+     * @ return A description of the available exits.
+     */
+    public String getExitString()    
     {
-        String exits = "";
-        Set<String> directions = exit.keySet();
+        Set<String> namesOfDirections = exits.keySet();
+        String exitsDescription = "Exit ";
 
-        for(String addDirections: directions)
-        {
-            exits += addDirections + " ";
+        for (String direction : namesOfDirections) {
+            exitsDescription += direction + " ";
         }
-        exits += "\n";
-        return exits;
+
+        return exitsDescription;
     }
 
     /**
      * Return a long description of this room, of the form:
      *     You are in the 'name of room'
      *     Exits: north west southwest
-     * @return A description 
-     * of the room, including exits.
+     * @return A description of the room, including exits.
      */
     public String getLongDescription()
     {
-        String exits = "";
-        Set<String> directions = exit.keySet();
-        exits += "Estas  " + getDescription() +"\n";
-        exits += "Tus salidas son: \n";
-        for(String addDirections: directions)
-        {
-            exits += addDirections + " ";
+        String longDescription = "You are " + description + ".\n" + getExitString() + "\n";
+        longDescription += "There are " + items.size() + " items: \n";
+        for (Item item : items) {
+            longDescription += "- " + item.getLongDescription() + "\n";
         }
-        exits += "\n";
-
-        return exits;
-    }
-
-    public void addItem(String description, double size,boolean canTakeIt)
-    {
-        itemList.add(new Item(description,size,canTakeIt)); 
+        return longDescription;
     }
     
+    /**
+     * Add an item to the room
+     * 
+     * @param item An item to be added to the room
+     */
     public void addItem(Item item)
     {
-        itemList.add(item);
+        items.add(item);
     }
 
-    public void getItems()
-    {
-        for(Item getItem: itemList)
-        {
-            System.out.println("Hay un/una " + getItem.getDescription());
-            System.out.println("Pesa " + getItem.getSize() + " KG\n");
+    
+    /**
+     * Return the item with the given id
+     * 
+     * @return item the item with the given id. null otherwise
+     */
+    public Item getItem(String id)
+    {      
+		int index = 0;
+		Item item = null;
+        while((item == null) && (index < items.size())) { 
+        	Item currentItem = items.get(index);
+        	if (currentItem.getId().equals(id)) {
+				item = currentItem;
+        	}
+        	index++;
         }
+        return item;
     }
-
-    public Item takeItem(String itemDescription)
+    
+    
+    /**
+     * Remove the given item
+     * 
+     * @param id the id of the item to remove
+     */
+    public void removeItem(String id)
     {
-        Item getItem = null;
-        for(Item searchItem: itemList)
-        {
-            if (itemDescription.equals(searchItem.getDescription()))
-            {
-                getItem = searchItem;
-            }
-        }
-        currentItem = getItem;
-        return getItem;
-    }
-
-    public void deleteCurrentItem()
-    {
-        itemList.remove(currentItem);
-    }
+ 		int index = 0;
+ 	  	boolean found = false;
+  		while(index < items.size() && !found){
+    		if(items.get(index).getId().equals(id)){
+			items.remove(index);
+			found = true;
+    		}
+    		index++;
+     	}
+    }     
 }
