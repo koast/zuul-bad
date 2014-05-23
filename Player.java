@@ -1,19 +1,19 @@
- import java.util.Stack;
- import java.util.ArrayList;
- 
- /**
-  * A player of the game
-  *
-  */
- public class Player
- {
-    
+import java.util.Stack;
+import java.util.ArrayList;
+
+/**
+ * A player of the game
+ *
+ */
+public class Player
+{
+
     private Room currentRoom;
     private Stack<Room> visitedRooms;
     private ArrayList<Item> mochila;
     private double cargaMaxima;
-    private static final double CARGA_MAXIMA_POR_DEFECTO=50;
-    
+    private static final double CARGA_MAXIMA_POR_DEFECTO=5;
+
     public Player()
     {
         currentRoom = null;
@@ -21,8 +21,8 @@
         mochila = new ArrayList<Item>();
         cargaMaxima = CARGA_MAXIMA_POR_DEFECTO;
     }
-     
-     /** 
+
+    /** 
      * Try to go in one direction. If there is an exit, enter
      * the new room, otherwise print an error message.
      */
@@ -43,14 +43,18 @@
         if (nextRoom == null) {
             System.out.println("There is no door!");
         }
-        else {
+        else if (!nextRoom.getOpen())
+        {
+           System.out.println("Esta cerrada la puerta"); 
+        }
+        else
+        {
             visitedRooms.push(currentRoom);          
             currentRoom = nextRoom;
             printLocationInfo();
         }
     }
-    
-    
+
     /** 
      * Print the room's long description 
      */   
@@ -59,7 +63,6 @@
         printLocationInfo();
     }
 
-
     /**
      * The player eats
      */  
@@ -67,8 +70,22 @@
     {
         System.out.println("You have eaten now and you are not hungry any more");
     }
+       
+    public Item getItem(String id)
+    {      
+		int index = 0;
+		Item item = null;
+        while((item == null) && (index < mochila.size())) { 
+        	Item currentItem = mochila.get(index);
+        	if (currentItem.getDescription().equals(id)) {
+				item = currentItem;
+        	}
+        	index++;
+        }
+        return item;
+    }
     
-    
+
     /**
      * Return to the previous room
      */
@@ -83,13 +100,12 @@
             System.out.println();
         }
     }
-    
-    
+
     public void printLocationInfo()
     {
         System.out.println(currentRoom.getLongDescription());      
     }
-    
+
     /**
      * Modifica la habitacion en la que esta el jugador
      * 
@@ -99,7 +115,7 @@
     {
         currentRoom = nuevaRoom;
     }
-    
+
     /**
      * Imprime por pantalla los items que tiene ese jugador
      * 
@@ -111,12 +127,9 @@
         {
             System.out.println(item.getLongDescription());
         }
-        
-    }
-  
 
-    
-    
+    }
+
     /**
      * Calculate the total weight for player's items.  
      * 
@@ -124,14 +137,13 @@
      */
     public double getTotalWeightItems()
     {
-		double peso = 0D;
-	   	for(Item item : mochila){
-	   		peso += item.getWeight();
-		}    
-		return peso;
-	}
+        double peso = 0D;
+        for(Item item : mochila){
+            peso += item.getWeight();
+        }    
+        return peso;
+    }
 
- 
     /**
      * Take de item contained in the given command
      */ 
@@ -140,59 +152,99 @@
             System.out.println("take what?");
             return;
         }
-        
+
         String id = command.getSecondWord();
         Item item = currentRoom.getItem(id);
         if(item != null)
         {
-        	if(item.canBeTaken()){
-		    	if(item.getWeight() +  getTotalWeightItems() <= cargaMaxima) {
-		    		System.out.println("You add a new item to your bag");
-		    		mochila.add(item);
-		    		currentRoom.removeItem(id);
-		    	}
-		    	else {
-		    		System.out.println("No hay espacio para este objeto");
-		    	}
-		}else{
-		       System.out.println("El Objeto no se puede coger");
-		}
+            if(item.canBeTaken()){
+                if(item.getWeight() +  getTotalWeightItems() <= cargaMaxima) {
+                    System.out.println("You add a new item to your bag");
+                    mochila.add(item);
+                    currentRoom.removeItem(id);
+                }
+                else {
+                    System.out.println("No hay espacio para este objeto");
+                }
+            }else{
+                System.out.println("El Objeto no se puede coger");
+            }
         }
         else
         {
-        	System.out.println("You don't select a item");
+            System.out.println("You don't select a item");
         }
     }
-    
-    
-   /**
-    * Drop an item of the player 
-    * 
-    */
-   public void drop(Command command)    
-   {
-   	if (!command.hasSecondWord()){
+
+    /**
+     * Drop an item of the player 
+     * 
+     */
+    public void drop(Command command)    
+    {
+        if (!command.hasSecondWord()){
             System.out.println("drop what?");
             return;
         }
-        
+
         String id = command.getSecondWord();
-	int index = 0;
-	boolean searching = true;
+        int index = 0;
+        boolean searching = true;
         while( searching && index < mochila.size()){
-        	Item item = mochila.get(index);
-        	if(item.getId().equals(id)){
-        		currentRoom.addItem(item);
-			mochila.remove(index);
-			searching = false;
-			System.out.println("El objeto se ha dejado en la habitacion");
-        	}
-        	index++;
+            Item item = mochila.get(index);
+            if(item.getDescription().equals(id)){
+                currentRoom.addItem(item);
+                mochila.remove(index);
+                searching = false;
+                System.out.println("El objeto se ha dejado en la habitacion");
+            }
+            index++;
         }
-        
+
         if (searching)
         {
-        	System.out.println("No estas llevando el objeto que has indicado");
+            System.out.println("No estas llevando el objeto que has indicado");
         }   
-   }
+    }
+
+    public void use(Command command){
+        if (!command.hasSecondWord()){
+            System.out.println("use what?");
+            return;
+        }
+
+        String id = command.getSecondWord();
+        Item item = getItem(id);
+        if(item != null)
+        {
+            if(item.canBeUse()){
+                if(item.getDescription().equals("llaveAscensor")) {
+                    if (currentRoom.getDescription().equals("en el ascensor")) {
+                        System.out.println("Has usado la llave del ascensor");
+                        currentRoom.open();
+                    }
+                    else
+                    {
+                        System.out.println("Ese item no se puede utilizar aqui" );
+                    }
+                }
+                else if(item.getDescription().equals("llavePuerta")){
+                    if(currentRoom.getDescription().equals("en la salida principal")) {
+                        System.out.println("Has usado la llave de la salida");
+                        currentRoom.open();
+                    }
+                    else
+                    {
+                        System.out.println("Ese item no se puede utilizar aqui" ); 
+                    }
+                }
+            }else{
+                System.out.println("Ese item no se puede utilizar");
+            }
+        }
+        else
+        {
+            System.out.println("Tu no tienes ese item");
+        }
+    }
 }	  

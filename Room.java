@@ -21,6 +21,7 @@ public class Room
     private String description;   
     private HashMap<String, Room> exits;
     private ArrayList<Item> items;
+    private boolean open;
 
     /**
      * Create a room described "description". Initially, it has
@@ -28,9 +29,10 @@ public class Room
      * "an open court yard".
      * @param description The room's description.
      */
-    public Room(String description) 
+    public Room(String description, boolean open) 
     {
         this.description = description;
+        this.open = open;
         exits = new HashMap<>();
         items = new ArrayList<>();
     }
@@ -109,14 +111,14 @@ public class Room
 		Item item = null;
         while((item == null) && (index < items.size())) { 
         	Item currentItem = items.get(index);
-        	if (currentItem.getId().equals(id)) {
+        	if (currentItem.getDescription().equals(id)) {
 				item = currentItem;
         	}
         	index++;
         }
         return item;
     }
-    
+
     
     /**
      * Remove the given item
@@ -128,11 +130,21 @@ public class Room
  		int index = 0;
  	  	boolean found = false;
   		while(index < items.size() && !found){
-    		if(items.get(index).getId().equals(id)){
+    		if(items.get(index).getDescription().equals(id)){
 			items.remove(index);
 			found = true;
     		}
     		index++;
      	}
-    }     
+    }
+    
+    public void open()
+    {
+        open = true;
+    }
+    
+    public boolean getOpen()
+    {
+        return open;
+    }
 }

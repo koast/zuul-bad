@@ -40,67 +40,69 @@ public class Game
      */
     private void createRooms()
     {
-        Room plantaDos,restaurante,cine,recreativos,escaleras,plantaUno,tiendaRopa,zapateria,salida,supermercado;
+        Room plantaDos,restaurante,cine,recreativos,ascensor,plantaUno,tiendaRopa,zapateria,salida,supermercado;
 
         // create the rooms
-        plantaDos = new Room("en la planta 2");
-        restaurante = new Room("en una zona con restaurantes");
-        cine = new Room("en la puerta del cine");
-        recreativos = new Room("en la zona recreativos");
-        escaleras = new Room("en las escaleras");
-        plantaUno = new Room("en el primer piso (Planta 1)");
-        tiendaRopa = new Room("en una tienda de ropa");
-        zapateria = new Room("en la zapateria");
-        salida = new Room("en la salida principal");
-        supermercado = new Room("en el supermercado");
+        plantaDos = new Room("en la planta 2",true);
+        restaurante = new Room("en una zona con restaurantes",true);
+        cine = new Room("en la puerta del cine",true);
+        recreativos = new Room("en la zona recreativos",true);
+        ascensor = new Room("en el ascensor",false);
+        plantaUno = new Room("en el primer piso (Planta 1)",true);
+        tiendaRopa = new Room("en una tienda de ropa",true);
+        zapateria = new Room("en la zapateria",true);
+        salida = new Room("en la salida principal",false);
+        supermercado = new Room("en el supermercado",true);
 
         //Pisos Planta Dos
         plantaDos.setExit("north",restaurante);
         plantaDos.setExit("south",cine);
         plantaDos.setExit("west",recreativos);
         plantaDos.setExit("northEast",supermercado);
-        plantaDos.setExit("east",escaleras);
-        plantaDos.addItem(new Item("papelera",3,true));
+        plantaDos.setExit("east",ascensor);
+        plantaDos.addItem(new Item("papelera",3,true,false));
 
         //Salidas Cine
         cine.setExit("north",plantaDos);
-        cine.addItem(new Item("palomitas",0.5,true));
+        cine.addItem(new Item("palomitas",0.5,true,false));
+        cine.addItem(new Item("llaveAscensor",0.5,true,true));
 
         //Salidas recreativos
         recreativos.setExit("east",plantaDos);
-        recreativos.addItem(new Item("moneda",0.05,true));
+        recreativos.addItem(new Item("moneda",0.05,true,false));
 
         //Salidas supermercado
         supermercado.setExit("southWest",plantaDos);
-        supermercado.addItem(new Item("carro",20,false));
+        supermercado.addItem(new Item("carro",20,false,false));
 
         //Salidas restaurante 
         restaurante.setExit("south",plantaDos);
-        restaurante.addItem(new Item("comida",1,true));
+        restaurante.addItem(new Item("comida",1,true,false));
 
-        //Salida escaleras
-        escaleras.setExit("downStairs",plantaUno);
-        escaleras.setExit("upStairs",plantaDos);
-        escaleras.addItem(new Item("cartera",1,true));
+        //Salida ascensor
+        ascensor.setExit("stayHere",plantaUno);
+        ascensor.setExit("upStairs",plantaDos);
+        ascensor.addItem(new Item("cartera",1,true,false));
 
         //Salidas Piso 1
         plantaUno.setExit("north",tiendaRopa);
         plantaUno.setExit("south",zapateria);
-        plantaUno.setExit("west",escaleras);
+        plantaUno.setExit("west",ascensor);
         plantaUno.setExit("east",salida);
-        plantaUno.addItem(new Item("planta",5,false));
+        plantaUno.addItem(new Item("planta",5,false,false));
 
         //Salidas tienda ropa
         tiendaRopa.setExit("south",plantaUno);
-        tiendaRopa.addItem(new Item("camiseta", 0.2,true));
+        tiendaRopa.addItem(new Item("camiseta", 0.2,true,false));
 
         //salida salida
         salida.setExit("west",plantaUno);
-        salida.addItem(new Item("puerta",5,false));
+        salida.addItem(new Item("puerta",5,false,false));
 
         //salida zapateria
         zapateria.setExit("north",plantaUno);
-        zapateria.addItem(new Item("deportivas",0.25,true)); 
+        zapateria.addItem(new Item("deportivas",0.25,true,false)); 
+        zapateria.addItem(new Item("llavePuerta",0.5,true,true));
 
         player.setCurrentRoom(plantaDos);
 
@@ -179,6 +181,9 @@ public class Game
              break;
         case DROP:
              player.drop(command);
+             break;
+        case USE:
+             player.use(command);
              break;
         }
         return wantToQuit;
