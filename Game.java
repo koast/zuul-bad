@@ -40,14 +40,14 @@ public class Game
      */
     private void createRooms()
     {
-        Room plantaDos,restaurante,cine,recreativos,escaleras,plantaUno,tiendaRopa,zapateria,salida,supermercado;
+        Room plantaDos,restaurante,cine,recreativos,ascensor,plantaUno,tiendaRopa,zapateria,salida,supermercado;
 
         // create the rooms
         plantaDos = new Room("en la planta 2");
         restaurante = new Room("en una zona con restaurantes");
         cine = new Room("en la puerta del cine");
         recreativos = new Room("en la zona recreativos");
-        escaleras = new Room("en las escaleras");
+        ascensor = new Room("en el ascensor");
         plantaUno = new Room("en el primer piso (Planta 1)");
         tiendaRopa = new Room("en una tienda de ropa");
         zapateria = new Room("en la zapateria");
@@ -59,7 +59,7 @@ public class Game
         plantaDos.setExit("south",cine);
         plantaDos.setExit("west",recreativos);
         plantaDos.setExit("northEast",supermercado);
-        plantaDos.setExit("east",escaleras);
+        plantaDos.setExit("east",ascensor);
         plantaDos.addItem(new Item("papelera",3,true));
 
         //Salidas Cine
@@ -78,15 +78,15 @@ public class Game
         restaurante.setExit("south",plantaDos);
         restaurante.addItem(new Item("comida",1,true));
 
-        //Salida escaleras
-        escaleras.setExit("downStairs",plantaUno);
-        escaleras.setExit("upStairs",plantaDos);
-        escaleras.addItem(new Item("cartera",1,true));
+        //Salida ascensor
+        ascensor.setExit("downStairs",plantaUno);
+        ascensor.setExit("upStairs",plantaDos);
+        ascensor.addItem(new Item("cartera",1,true));
 
         //Salidas Piso 1
         plantaUno.setExit("north",tiendaRopa);
         plantaUno.setExit("south",zapateria);
-        plantaUno.setExit("west",escaleras);
+        plantaUno.setExit("west",ascensor);
         plantaUno.setExit("east",salida);
         plantaUno.addItem(new Item("planta",5,false));
 

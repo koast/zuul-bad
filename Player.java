@@ -188,9 +188,9 @@ public class Player
         }   
     }
 
-    public void take(Command command){
+    public void use(Command command){
         if (!command.hasSecondWord()){
-            System.out.println("take what?");
+            System.out.println("use what?");
             return;
         }
 
@@ -198,22 +198,22 @@ public class Player
         Item item = currentRoom.getItem(id);
         if(item != null)
         {
-            if(item.canBeTaken()){
-                if(item.getWeight() +  getTotalWeightItems() <= cargaMaxima) {
-                    System.out.println("You add a new item to your bag");
-                    mochila.add(item);
-                    currentRoom.removeItem(id);
+            if(item.canBeUse()){
+                if(item.getId().equals("llaveAscensor") && currentRoom.getDescription().equals("en el ascensor")) {
+                    System.out.println("Has usado la llave del ascensor");
+                    currentRoom.open();
                 }
-                else {
-                    System.out.println("No hay espacio para este objeto");
+                else if(item.getId().equals("llavePuerta") && currentRoom.getDescription().equals("en la salida principal")) {
+                    System.out.println("Has usado la llave de la salida");
+                    currentRoom.open();
                 }
             }else{
-                System.out.println("El Objeto no se puede coger");
+                System.out.println("Ese item no se puede utilizar aqui");
             }
         }
         else
         {
-            System.out.println("You don't select a item");
+            System.out.println("Tu no tienes ese item");
         }
     }
 }	  
