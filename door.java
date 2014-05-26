@@ -1,9 +1,14 @@
-public class door
+public class Door
 {
     private boolean open;
+    private Item llave;
+    private String position;
     
-    public door(boolean open)
+    public Door(boolean open, Item llave, String position)
     {
+        this.open = open;
+        this.llave = llave;
+        this.position = position;
     }
     
     public boolean getOpen()
@@ -14,5 +19,15 @@ public class door
     public void open()
     {
         open = true;
+    }
+    
+    public Item llave()
+    {
+        return llave;
+    }
+    
+    public String getPosition()
+    {
+        return position;
     }
 }
