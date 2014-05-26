@@ -43,7 +43,7 @@ public class Player
         if (nextRoom == null) {
             System.out.println("There is no door!");
         }
-        else if (!nextRoom.getOpen() && !currentRoom.getKeyUsed())
+        else if (!currentRoom.getDoor().getOpen() && direction.equals(currentRoom.getDoor().getPosition()))
         {
             System.out.println("Esta cerrada la puerta"); 
         }
@@ -219,33 +219,27 @@ public class Player
         if(item != null)
         {
             if(item.canBeUse()){
-                if(item.getDescription().equals("llaveAscensor")) {
-                    for(String textExits: currentRoom.getExitsDescriptions())
+                if(item == currentRoom.getDoor().llave()) {
+                    if(currentRoom.getDoor() != null)
                     {
-                        if (textExits.equals("en el ascensor")) {
-                            open = true;
-                            currentRoom.openNextDoor();
-                        }
-                    }
-                    if (open){
                         System.out.println("Has abierto la puerta del ascensor");
+                        currentRoom.getDoor().open();
                     }
-                    else{
+                    else
+                    {
                         System.out.println("No hay ninguna puerta que se pueda abrir");
                     }
                 }
-                else if(item.getDescription().equals("llavePuerta")) {
-                    for(String textExits: currentRoom.getExitsDescriptions())
+                else 
+                
+                if(item == currentRoom.getDoor().llave()) {
+                    if(currentRoom.getDoor() != null)
                     {
-                        if (textExits.equals("en la salida principal")) {
-                            open = true;
-                            currentRoom.openNextDoor();
-                        }
-                    }
-                    if (open){
                         System.out.println("Has usado la llave de la salida");
+                        currentRoom.getDoor().open();
                     }
-                    else{
+                    else
+                    {
                         System.out.println("No hay ninguna puerta que se pueda abrir");
                     }
                 }

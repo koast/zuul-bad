@@ -23,7 +23,6 @@ public class Game
     private Parser parser;
     private Player player;
     private int siguienteIDAAsignar;
-    
 
     /**
      * Create the game and initialise its internal map.
@@ -42,19 +41,42 @@ public class Game
     {
         Room plantaDos,restaurante,cine,recreativos,ascensor,plantaUno,tiendaRopa,zapateria,salida,supermercado,salaAscensor,calle;
 
+        //Objetos
+
+        Item llaveAscensor = new Item("llaveAscensor",0.5,true,true);
+        Item papelera = new Item("papelera",3,true,false);
+        Item moneda = new Item("moneda",0.05,true,false);
+        Item carro = new Item("carro",20,false,false);
+        Item ascensorObject = new Item("ascensor",500,false,false);
+        Item comida = new Item("comida",1,true,false);
+        Item cartera = new Item("cartera",1,true,false);
+        Item planta = new Item("planta",5,false,false);
+        Item camiseta = new Item("camiseta", 0.2,true,false);
+        Item puerta = new Item("puerta",5,false,false);
+        Item flor = new Item("flor",0.5,false,false);
+        Item deportivas = new Item("deportivas",0.25,true,false);
+        Item llavePuerta = new Item("llavePuerta",0.5,true,true);
+
+        //puertas
+        
+        Door ascensorDoor = new Door(false,llaveAscensor,"east");
+        Door calleDoor = new Door(false,llavePuerta,"east");
+        Door openedDoor = new Door(true,null,"");
+        
         // create the rooms
-        plantaDos = new Room("en la planta 2",true);
-        restaurante = new Room("en una zona con restaurantes",true);
-        cine = new Room("en la puerta del cine",true);
-        recreativos = new Room("en la zona recreativos",true);
-        salaAscensor = new Room("habitacion con ascensor",true);
-        ascensor = new Room("en el ascensor",false);
-        plantaUno = new Room("en el primer piso (Planta 1)",true);
-        tiendaRopa = new Room("en una tienda de ropa",true);
-        zapateria = new Room("en la zapateria",true);
-        salida = new Room("en la salida principal",false);
-        calle = new Room("en la calle",true);
-        supermercado = new Room("en el supermercado",true);
+        
+        plantaDos = new Room("en la planta 2",openedDoor);
+        restaurante = new Room("en una zona con restaurantes",openedDoor);
+        cine = new Room("en la puerta del cine",openedDoor);
+        recreativos = new Room("en la zona recreativos",openedDoor);
+        salaAscensor = new Room("habitacion con ascensor",ascensorDoor);
+        ascensor = new Room("en el ascensor",openedDoor);
+        plantaUno = new Room("en el primer piso (Planta 1)",openedDoor);
+        tiendaRopa = new Room("en una tienda de ropa",openedDoor);
+        zapateria = new Room("en la zapateria",openedDoor);
+        salida = new Room("en la salida principal",calleDoor);
+        calle = new Room("en la calle",openedDoor);
+        supermercado = new Room("en el supermercado",openedDoor);
 
         //Pisos Planta Dos
         plantaDos.setExit("north",restaurante);
@@ -62,59 +84,60 @@ public class Game
         plantaDos.setExit("west",recreativos);
         plantaDos.setExit("northEast",supermercado);
         plantaDos.setExit("east",salaAscensor);
-        plantaDos.addItem(new Item("papelera",3,true,false));
+        plantaDos.addItem(papelera);
 
         //Salidas Cine
         cine.setExit("north",plantaDos);
         cine.addItem(new Item("palomitas",0.5,true,false));
-        cine.addItem(new Item("llaveAscensor",0.5,true,true));
+        cine.addItem(moneda);
+        cine.addItem(llaveAscensor);
 
         //Salidas recreativos
         recreativos.setExit("east",plantaDos);
-        recreativos.addItem(new Item("moneda",0.05,true,false));
+        recreativos.addItem(carro);
 
         //Salidas supermercado
         supermercado.setExit("southWest",plantaDos);
-        supermercado.addItem(new Item("carro",20,false,false));
+        supermercado.addItem(comida);
 
         //Salidas restaurante 
         restaurante.setExit("south",plantaDos);
-        restaurante.addItem(new Item("comida",1,true,false));
-        
+        restaurante.addItem(planta);
+
         //Salida sala ascensor
         salaAscensor.setExit("west",plantaDos);
         salaAscensor.setExit("east",ascensor);
-        salaAscensor.addItem(new Item("ascensor",500,false,false));
+        salaAscensor.addItem(ascensorObject);
 
         //Salida ascensor
         ascensor.setExit("stayHere",plantaUno);
         ascensor.setExit("down",plantaDos);
-        ascensor.addItem(new Item("cartera",1,true,false));
+        ascensor.addItem(camiseta);
 
         //Salidas Piso 1
         plantaUno.setExit("north",tiendaRopa);
         plantaUno.setExit("south",zapateria);
         plantaUno.setExit("west",ascensor);
         plantaUno.setExit("east",salida);
-        plantaUno.addItem(new Item("planta",5,false,false));
+        plantaUno.addItem(puerta);
 
         //Salidas tienda ropa
         tiendaRopa.setExit("south",plantaUno);
-        tiendaRopa.addItem(new Item("camiseta", 0.2,true,false));
+        tiendaRopa.addItem(flor);
 
         //salida salida
         salida.setExit("west",plantaUno);
         salida.setExit("east",calle);
-        salida.addItem(new Item("puerta",5,false,false));
-        
+        salida.addItem(deportivas);
+
         //salida calle
         calle.setExit("west",salida);
-        calle.addItem(new Item("flor",0.5,false,false));
+        calle.addItem(carro);
 
         //salida zapateria
         zapateria.setExit("north",plantaUno);
-        zapateria.addItem(new Item("deportivas",0.25,true,false)); 
-        zapateria.addItem(new Item("llavePuerta",0.5,true,true));
+        zapateria.addItem(planta); 
+        zapateria.addItem(llavePuerta);
 
         player.setCurrentRoom(plantaDos);
 
@@ -167,36 +190,36 @@ public class Game
 
         Option commandWord = command.getCommandWord();
         switch (commandWord){
-        case HELP:
-             printHelp();
-             break;
-        case GO:
-             player.goRoom(command);
-             break;
-        case LOOK:
-             player.look();
-             break;
-        case EAT:
-             player.eat();
-             break;
-        case BACK:
-             player.back();
-             break;
-        case ITEMS:
-             player.items();
-             break;
-        case TAKE:
-             player.take(command);
-             break;
-        case QUIT:
-             wantToQuit = quit(command);
-             break;
-        case DROP:
-             player.drop(command);
-             break;
-        case USE:
-             player.use(command);
-             break;
+            case HELP:
+            printHelp();
+            break;
+            case GO:
+            player.goRoom(command);
+            break;
+            case LOOK:
+            player.look();
+            break;
+            case EAT:
+            player.eat();
+            break;
+            case BACK:
+            player.back();
+            break;
+            case ITEMS:
+            player.items();
+            break;
+            case TAKE:
+            player.take(command);
+            break;
+            case QUIT:
+            wantToQuit = quit(command);
+            break;
+            case DROP:
+            player.drop(command);
+            break;
+            case USE:
+            player.use(command);
+            break;
         }
         return wantToQuit;
     }
@@ -217,7 +240,6 @@ public class Game
         parser.getCommands();
     }
 
-    
 
     /** 
      * "Quit" was entered. Check the rest of the command to see

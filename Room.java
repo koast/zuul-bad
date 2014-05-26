@@ -22,22 +22,20 @@ public class Room
     private String description;   
     private HashMap<String, Room> exits;
     private ArrayList<Item> items;
-    private boolean open;
-    private boolean keyUsed;
-
+    private Door door;
+    
     /**
      * Create a room described "description". Initially, it has
      * no exits. "description" is something like "a kitchen" or
      * "an open court yard".
      * @param description The room's description.
      */
-    public Room(String description, boolean open) 
+    public Room(String description, Door door) 
     {
         this.description = description;
-        this.open = open;
+        this.door = door;
         exits = new HashMap<>();
         items = new ArrayList<>();
-        keyUsed = false;
     }
 
     public void setExit(String direction, Room nextRoom)
@@ -74,23 +72,6 @@ public class Room
         }
 
         return exitsDescription;
-    }
-    
-    /**
-     * Return a ArrayList with all the possibles exits
-     */
-    
-    public ArrayList<String> getExitsDescriptions()
-    {
-        Collection<Room> exitsDescriptions = exits.values();
-        ArrayList<String> descriptions = new ArrayList<>();
-
-        for (Room exitRoom : exitsDescriptions) 
-        {
-            descriptions.add(exitRoom.getDescription());
-        }
-        
-        return descriptions;
     }
 
     /**
@@ -158,23 +139,8 @@ public class Room
         }
     }
     
-    public void open()
+    public Door getDoor()
     {
-        open = true;
-    }
-    
-    public boolean getOpen()
-    {
-        return open;
-    }
-    
-    public void openNextDoor()
-    {
-        keyUsed = true;
-    }
-    
-    public boolean getKeyUsed()
-    {
-        return keyUsed;
+        return door;
     }
 }    
