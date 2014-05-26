@@ -43,9 +43,9 @@ public class Player
         if (nextRoom == null) {
             System.out.println("There is no door!");
         }
-        else if (!nextRoom.getOpen())
+        else if (!nextRoom.getOpen() && !currentRoom.getKeyUsed())
         {
-           System.out.println("Esta cerrada la puerta"); 
+            System.out.println("Esta cerrada la puerta"); 
         }
         else
         {
@@ -70,21 +70,20 @@ public class Player
     {
         System.out.println("You have eaten now and you are not hungry any more");
     }
-       
+
     public Item getItem(String id)
     {      
-		int index = 0;
-		Item item = null;
+        int index = 0;
+        Item item = null;
         while((item == null) && (index < mochila.size())) { 
-        	Item currentItem = mochila.get(index);
-        	if (currentItem.getDescription().equals(id)) {
-				item = currentItem;
-        	}
-        	index++;
+            Item currentItem = mochila.get(index);
+            if (currentItem.getDescription().equals(id)) {
+                item = currentItem;
+            }
+            index++;
         }
         return item;
     }
-    
 
     /**
      * Return to the previous room
@@ -215,30 +214,43 @@ public class Player
 
         String id = command.getSecondWord();
         Item item = getItem(id);
+        boolean open = false;
+
         if(item != null)
         {
             if(item.canBeUse()){
                 if(item.getDescription().equals("llaveAscensor")) {
-                    if (currentRoom.getDescription().equals("en el ascensor")) {
-                        System.out.println("Has usado la llave del ascensor");
-                        currentRoom.open();
-                    }
-                    else
+                    for(String textExits: currentRoom.getExitsDescriptions())
                     {
-                        System.out.println("Ese item no se puede utilizar aqui" );
+                        if (textExits.equals("en el ascensor")) {
+                            open = true;
+                            currentRoom.openNextDoor();
+                        }
+                    }
+                    if (open){
+                        System.out.println("Has abierto la puerta del ascensor");
+                    }
+                    else{
+                        System.out.println("No hay ninguna puerta que se pueda abrir");
                     }
                 }
-                else if(item.getDescription().equals("llavePuerta")){
-                    if(currentRoom.getDescription().equals("en la salida principal")) {
+                else if(item.getDescription().equals("llavePuerta")) {
+                    for(String textExits: currentRoom.getExitsDescriptions())
+                    {
+                        if (textExits.equals("en la salida principal")) {
+                            open = true;
+                            currentRoom.openNextDoor();
+                        }
+                    }
+                    if (open){
                         System.out.println("Has usado la llave de la salida");
-                        currentRoom.open();
                     }
-                    else
-                    {
-                        System.out.println("Ese item no se puede utilizar aqui" ); 
+                    else{
+                        System.out.println("No hay ninguna puerta que se pueda abrir");
                     }
                 }
-            }else{
+            }
+            else{
                 System.out.println("Ese item no se puede utilizar");
             }
         }
@@ -246,5 +258,6 @@ public class Player
         {
             System.out.println("Tu no tienes ese item");
         }
-    }
-}	  
+    } 
+}
+

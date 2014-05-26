@@ -1,6 +1,7 @@
 import java.util.HashMap;
 import java.util.Set;
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Class Room - a room in an adventure game.
@@ -22,6 +23,7 @@ public class Room
     private HashMap<String, Room> exits;
     private ArrayList<Item> items;
     private boolean open;
+    private boolean keyUsed;
 
     /**
      * Create a room described "description". Initially, it has
@@ -35,6 +37,7 @@ public class Room
         this.open = open;
         exits = new HashMap<>();
         items = new ArrayList<>();
+        keyUsed = false;
     }
 
     public void setExit(String direction, Room nextRoom)
@@ -72,6 +75,23 @@ public class Room
 
         return exitsDescription;
     }
+    
+    /**
+     * Return a ArrayList with all the possibles exits
+     */
+    
+    public ArrayList<String> getExitsDescriptions()
+    {
+        Collection<Room> exitsDescriptions = exits.values();
+        ArrayList<String> descriptions = new ArrayList<>();
+
+        for (Room exitRoom : exitsDescriptions) 
+        {
+            descriptions.add(exitRoom.getDescription());
+        }
+        
+        return descriptions;
+    }
 
     /**
      * Return a long description of this room, of the form:
@@ -107,14 +127,14 @@ public class Room
      */
     public Item getItem(String id)
     {      
-		int index = 0;
-		Item item = null;
+        int index = 0;
+        Item item = null;
         while((item == null) && (index < items.size())) { 
-        	Item currentItem = items.get(index);
-        	if (currentItem.getDescription().equals(id)) {
-				item = currentItem;
-        	}
-        	index++;
+            Item currentItem = items.get(index);
+            if (currentItem.getDescription().equals(id)) {
+                item = currentItem;
+            }
+            index++;
         }
         return item;
     }
@@ -127,15 +147,15 @@ public class Room
      */
     public void removeItem(String id)
     {
- 		int index = 0;
- 	  	boolean found = false;
-  		while(index < items.size() && !found){
-    		if(items.get(index).getDescription().equals(id)){
-			items.remove(index);
-			found = true;
-    		}
-    		index++;
-     	}
+        int index = 0;
+        boolean found = false;
+        while(index < items.size() && !found){
+            if(items.get(index).getDescription().equals(id)){
+            items.remove(index);
+            found = true;
+            }
+            index++;
+        }
     }
     
     public void open()
@@ -147,4 +167,14 @@ public class Room
     {
         return open;
     }
-}
+    
+    public void openNextDoor()
+    {
+        keyUsed = true;
+    }
+    
+    public boolean getKeyUsed()
+    {
+        return keyUsed;
+    }
+}    
