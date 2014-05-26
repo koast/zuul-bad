@@ -40,18 +40,20 @@ public class Game
      */
     private void createRooms()
     {
-        Room plantaDos,restaurante,cine,recreativos,ascensor,plantaUno,tiendaRopa,zapateria,salida,supermercado;
+        Room plantaDos,restaurante,cine,recreativos,ascensor,plantaUno,tiendaRopa,zapateria,salida,supermercado,salaAscensor,calle;
 
         // create the rooms
         plantaDos = new Room("en la planta 2",true);
         restaurante = new Room("en una zona con restaurantes",true);
         cine = new Room("en la puerta del cine",true);
         recreativos = new Room("en la zona recreativos",true);
+        salaAscensor = new Room("habitacion con ascensor",true);
         ascensor = new Room("en el ascensor",false);
         plantaUno = new Room("en el primer piso (Planta 1)",true);
         tiendaRopa = new Room("en una tienda de ropa",true);
         zapateria = new Room("en la zapateria",true);
         salida = new Room("en la salida principal",false);
+        calle = new Room("en la calle",true);
         supermercado = new Room("en el supermercado",true);
 
         //Pisos Planta Dos
@@ -59,7 +61,7 @@ public class Game
         plantaDos.setExit("south",cine);
         plantaDos.setExit("west",recreativos);
         plantaDos.setExit("northEast",supermercado);
-        plantaDos.setExit("east",ascensor);
+        plantaDos.setExit("east",salaAscensor);
         plantaDos.addItem(new Item("papelera",3,true,false));
 
         //Salidas Cine
@@ -78,10 +80,15 @@ public class Game
         //Salidas restaurante 
         restaurante.setExit("south",plantaDos);
         restaurante.addItem(new Item("comida",1,true,false));
+        
+        //Salida sala ascensor
+        salaAscensor.setExit("west",plantaDos);
+        salaAscensor.setExit("east",ascensor);
+        salaAscensor.addItem(new Item("ascensor",500,false,false));
 
         //Salida ascensor
         ascensor.setExit("stayHere",plantaUno);
-        ascensor.setExit("upStairs",plantaDos);
+        ascensor.setExit("down",plantaDos);
         ascensor.addItem(new Item("cartera",1,true,false));
 
         //Salidas Piso 1
@@ -97,7 +104,12 @@ public class Game
 
         //salida salida
         salida.setExit("west",plantaUno);
+        salida.setExit("east",calle);
         salida.addItem(new Item("puerta",5,false,false));
+        
+        //salida calle
+        calle.setExit("west",salida);
+        calle.addItem(new Item("flor",0.5,false,false));
 
         //salida zapateria
         zapateria.setExit("north",plantaUno);
