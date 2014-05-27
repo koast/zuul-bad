@@ -220,7 +220,7 @@ public class Player
         {
             if(item.canBeUse()){
                 if(item == currentRoom.getDoor().llave()) {
-                    if(currentRoom.getDoor() != null)
+                    if(currentRoom.getDoor() != new Door(true,null,""))
                     {
                         System.out.println("Has abierto la puerta del ascensor");
                         currentRoom.getDoor().open();
@@ -233,7 +233,7 @@ public class Player
                 else 
                 
                 if(item == currentRoom.getDoor().llave()) {
-                    if(currentRoom.getDoor() != null)
+                    if(currentRoom.getDoor() != new Door(true,null,""))
                     {
                         System.out.println("Has usado la llave de la salida");
                         currentRoom.getDoor().open();
@@ -242,6 +242,9 @@ public class Player
                     {
                         System.out.println("No hay ninguna puerta que se pueda abrir");
                     }
+                }
+                else{
+                    System.out.println("No estas en el lugar adecuado");
                 }
             }
             else{
